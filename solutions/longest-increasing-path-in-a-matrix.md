@@ -2,7 +2,9 @@
 
 We are given a matrix that is represented by an array. The array being: [[9,9,4],[6,6,8],[2,1,1]].
 We need to return the longest incresing path in the matrix.
+We can store in an array the length of the longets path.
 Every cell can be moved up, down, right, left.
+We need to iterate throguh all cells, computing all paths and finding the maximum path.
 It can't move diagonally and it can't move outside boundaries.
 
 # Detailed step-by-step solution outline and complexity analysis
@@ -31,6 +33,8 @@ It can't move diagonally and it can't move outside boundaries.
 5. Complexity analysis
    - Each cell is processed once, and each recursive call checks up to 4 neighbors.
    - Using memoization ensures we do not process the same cell multiple times.
+   - The total time spent on the searchPath function is proportional to O(m _ n), m being number of rows and n being number of columns, so the time complexity will be O(m _ n).
+   - the space complexity i think it will be the same, O(m \* n) since we need space for each call.
 
 # Final TypeScript solution code
 
@@ -93,7 +97,9 @@ function longestIncreasingPath(matrix: Matrix): number {
 
 # A short paragraph on challenges and optimizations
 
-- The challenge was using memoization. Without it the algorithm would repeat work for the same cells multiple times.
+- Struggled with starting the problem. Did not know where the solution should start from in the matrix and how to wrap my head around moving in 4 directions. Started from a visual example on paper to illustrate how it is traversed.
+- First i started only with a seach function that was receiving row and column and was calling it repeatedly for the same cells, this took to some failing tests based on performance problems and long time of execution. This took me to more research when i got to the concept of memoization and i had to get my head around it so that the algorithm would not repeat work for the same cells multiple times.
+  By creating the stored array i ensured that each cell is calculated once.
 - As a optimization:
-  - i could refactor the code, by moving searchPath to a helper.
-  - find Array.prototype solutions instead of the for loops
+  - refactor the code, by moving searchPath to a helper.
+  - refactor by using Array.prototype solutions instead of the for loops

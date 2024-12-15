@@ -19,7 +19,8 @@ If k = 3 and nums = [1,3,-1,-3], windows will be [1,3,-1] and [3,-1,-3]
 
 5. Complexity analysis
    - To create each sliding window, we take a slice of k elements from the array. This slicing takes time proportional to the size of the slice, which is k.
-   - We repeat this for every starting position in the array, so if the array has n elements this step might take some time.
+   - We repeat this for every starting position in the array, so if the array has n elements this step might take some time. The time complexity si O(n \* K), because we are iterating over the entire array of length n and also we are using slice and creating new arrays of size k.
+   - The space complexity is also O( n \* k), because of the three operations we are using.
 
 # Final TypeScript solution code
 

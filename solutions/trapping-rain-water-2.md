@@ -33,7 +33,10 @@ Given heightMap = [[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]], the trapped water
 4.  Once all cells have been processed, return `totalWater`, which represents the total trapped water volume.
 
 5.  Complexity analysis
-    - The solution, checks for each cell its neighbors and potentially add them to the priority queue, each adding operations.
+    - The while loop processes each cell once. Each iteration, the cell with the smallest height si processed and neighbores are added to the queue.
+    - Adding a sorting operation to is considered to have a logaritmic time complexity and sorting the priority queue with k elements takes us to a complexity of O(log k). We are sorting col and raw, represented by m and n -> O(m * n). So this taking us to a sorting complexity of O(log(m*n))
+    - We are also processing each neighbor this takes us to O(4(m\*n))
+    - The space complexity is O( n \* m).
 
 # Final TypeScript solution code
 
@@ -138,5 +141,9 @@ function addBoundaryCellsToQueue(
 
 # A short paragraph on challenges and optimizations
 
-- A challenge was thinking of a way to manage the priority queue, to always process the smallest heigth first.
-- Handling all the boundary cells and thinking of a way to mark them, that took to using visited.
+- Visualizing that this exercise is a combination of trapping rain water and the longest increasing path.
+- My biggest challenge was visualizing the array or arrays as a 2d figure. How to track water dropped to the lowest cell.
+- A challenge was handling all the boundary cells. To calculate the leftMost, rightMost, topMost and BottomMost. Also thinking of a way to keep track of each cell.
+- Learned about priority queue.
+- Another challenge was thinking of a way to manage the priority queue, to always process the smallest heigth first.
+- Started with a function that did everything and then optimized it to three separate functions that do their own thing.

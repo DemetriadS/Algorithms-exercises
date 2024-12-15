@@ -24,8 +24,14 @@ If s = "a" and t = "aa", the result is "" (not enough as in s).
 7. If no valid substring exists, return an empty string. Otherwise, return the shortest substring.
 
 8. Complexity analysis
-   - Counting all characters in t might take time if t is long.
-   - For each substring, we check all characters in t to ensure it matches the count.
+   Time complexity:
+   - We are converting s and t into arrays, this takes us to O(m + n).
+   - We are counting accurances in t, this takes O(n)
+   - We are iterating through all substrings of s. We are running m times for the forEach and one m time for the for inside. That takes us to O(m^2)
+   - We are validating the substring inside isValid. That take checking the keys in tCount (this being O(n)). Since there are O(m^2) substrings, this will take O(m^2\*n).
+   - And finally we are finding the smallest substring, which is like we said above O(m^2).
+     Space complexity
+   - We need storage for tCount, substringCount and solutions, this takes us to O(m^3)
 
 # Final TypeScript solution code
 
@@ -76,4 +82,6 @@ function minWindow(s: string, t: string): string {
 
 # A short paragraph on challenges and optimizations
 
+- Started with a more rough implementation using for loops instead of reduce.
+- Started with not taking in consideration the case where you could have more then one of the same char, this took me to failing tests.
 - The current solution generates all possible substrings of s, which is slow for large inputs, this might take to memory loss.
