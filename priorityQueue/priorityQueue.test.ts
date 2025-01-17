@@ -1,19 +1,29 @@
 import { enqueue, dequeue, peek } from "./priorityQueus";
 
 describe("PriorityQueue Tests", () => {
-  let queue: { item: number | string; priority: number }[];
+  let mockQueue: { item: string | number; priority: number }[];
 
   beforeEach(() => {
-    queue = [];
+    // Mock data for setup
+    mockQueue = [
+      { item: 1, priority: 1 },
+      { item: "test", priority: 2 },
+      { item: 3, priority: 3 },
+    ];
   });
 
   it("should add an item to a queue", () => {
-    queue = [
+    const updatedQueue = enqueue(mockQueue, 4, 4);
+
+    expect(updatedQueue).toEqual([
       { item: 1, priority: 1 },
       { item: "test", priority: 2 },
-    ];
-    enqueue(queue, 3, 3);
-    expect(queue).toEqual([
+      { item: 3, priority: 3 },
+      { item: 4, priority: 4 },
+    ]);
+
+    // Ensure original queue remains unchanged
+    expect(mockQueue).toEqual([
       { item: 1, priority: 1 },
       { item: "test", priority: 2 },
       { item: 3, priority: 3 },
@@ -21,23 +31,41 @@ describe("PriorityQueue Tests", () => {
   });
 
   it("should remove an item from a queue", () => {
-    enqueue(queue, 3, 3);
-    enqueue(queue, 1, 1);
-    enqueue(queue, 2, 2);
-    enqueue(queue, "test", 33);
-    dequeue(queue, 2);
-    dequeue(queue, 3);
-    expect(queue).toEqual([
+    const { updatedQueue, removedItem } = dequeue(mockQueue, 2);
+
+    expect(updatedQueue).toEqual([
       { item: 1, priority: 1 },
-      { item: "test", priority: 33 },
+      { item: 3, priority: 3 },
+    ]);
+    expect(removedItem).toBe("test");
+
+    // Ensure original queue remains unchanged
+    expect(mockQueue).toEqual([
+      { item: 1, priority: 1 },
+      { item: "test", priority: 2 },
+      { item: 3, priority: 3 },
     ]);
   });
 
-  it("should order correctly the queue based on priority", () => {
-    enqueue(queue, 3, 3);
-    enqueue(queue, 1, 1);
-    enqueue(queue, "test", 2);
-    expect(queue).toEqual([
+  it("should return null when trying to remove an item with a non-existent priority", () => {
+    const { updatedQueue, removedItem } = dequeue(mockQueue, 99);
+
+    expect(updatedQueue).toEqual(mockQueue);
+    expect(removedItem).not.toBeDefined();
+  });
+
+  it("should order the queue correctly when adding items based on priority", () => {
+    const updatedQueue = enqueue(mockQueue, "new-item", 2.5);
+
+    expect(updatedQueue).toEqual([
+      { item: 1, priority: 1 },
+      { item: "test", priority: 2 },
+      { item: "new-item", priority: 2.5 },
+      { item: 3, priority: 3 },
+    ]);
+
+    // Ensure original queue remains unchanged
+    expect(mockQueue).toEqual([
       { item: 1, priority: 1 },
       { item: "test", priority: 2 },
       { item: 3, priority: 3 },
@@ -45,9 +73,22 @@ describe("PriorityQueue Tests", () => {
   });
 
   it("should show the first item in the queue", () => {
-    enqueue(queue, 3, 3);
-    enqueue(queue, 1, 1);
-    enqueue(queue, 2, 2);
-    expect(peek(queue)).toBe(1);
+    const firstItem = peek(mockQueue);
+
+    expect(firstItem).toBe(1);
+
+    // Ensure original queue remains unchanged
+    expect(mockQueue).toEqual([
+      { item: 1, priority: 1 },
+      { item: "test", priority: 2 },
+      { item: 3, priority: 3 },
+    ]);
+  });
+
+  it("should return undefined when peeking an empty queue", () => {
+    const emptyQueue: { item: string | number; priority: number }[] = [];
+    const firstItem = peek(emptyQueue);
+
+    expect(firstItem).toBeUndefined();
   });
 });

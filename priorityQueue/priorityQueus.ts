@@ -1,7 +1,11 @@
-type ElementWithPriority = { item: number | string; priority: number };
+type ElementWithPriority<T> = { item: T; priority: number };
+type DequeueResult<T> = {
+  updatedQueue: ElementWithPriority<T>[];
+  removedItem: T | undefined;
+};
 
-const enqueue = (
-  queue: ElementWithPriority[],
+const enqueue = <T>(
+  queue: ElementWithPriority<T>[],
   item: number | string,
   priority: number
 ) => {
@@ -12,28 +16,38 @@ const enqueue = (
     (existingItem) => newItem.priority < existingItem.priority
   );
 
-  // Insert the item at the determined position, or add it to the end if no such position exists
   if (insertIndex === -1) {
-    queue.push(newItem);
+    return [...queue, newItem];
   } else {
-    queue.splice(insertIndex, 0, newItem);
+    return [
+      ...queue.slice(0, insertIndex),
+      newItem,
+      ...queue.slice(insertIndex),
+    ];
   }
 };
 
-const dequeue = (queue: ElementWithPriority[], priority: number) => {
+const dequeue = <T>(
+  queue: ElementWithPriority<T>[],
+  priority: number
+): DequeueResult<T> => {
   if (queue.length === 0) {
-    return null;
+    return { updatedQueue: queue, removedItem: undefined };
   }
   // Find the index of the item with the desired priority
   const index = queue.findIndex((item) => item.priority === priority);
   if (index !== -1) {
-    return queue.splice(index, 1)[0].item; // Return only the item's value
+    const removedItem = queue[index].item;
+
+    // Create a new queue without the item at the found index
+    const updatedQueue = queue.filter((_, i) => i !== index);
+    return { updatedQueue, removedItem };
   }
 
-  return null;
+  return { updatedQueue: queue, removedItem: undefined };
 };
 
-const peek = (queue: ElementWithPriority[]) => {
+const peek = <T>(queue: ElementWithPriority<T>[]) => {
   return queue.length === 0 ? undefined : queue[0].item;
 };
 

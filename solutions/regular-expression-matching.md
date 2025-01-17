@@ -2,9 +2,10 @@
 
 We want to build a function that checks if a string s matches a pattern p. The pattern uses two special symbols:
 
-1. .: This can match any single character (like a wildcard).
-2. _: This allows the preceding character to appear zero or more times. For example:
-   _ "a\*" can match "", "a", "aa", "aaa", etc.
+1. `.`: This can match any single character.
+2. `*`: This allows the preceding character to appear zero or more times.
+   For example:
+   - "a\*" can match "", "a", "aa", "aaa", etc.
    - ".\*" can match any sequence of characters, including an empty string.
      The goal is to see if the pattern matches the entire string, not just a part of it.
 
@@ -16,10 +17,10 @@ Steps to Solve:
 - dpTable[0][0] is true because an empty string matches an empty pattern.
 - Handle cases where the pattern has \* to match zero occurrences of the preceding character.
 - If the current characters in `s` and `p` match, or if p[j-1] is
-  `.`, then: dpTable[i][j]=dpTable[i−1][j−1]
+  `.`, then: dpTable[i][j]=dpTable[i−1][j−1].
 - If p[j-1] is `*`, there are two scenarios:
-  1. Treat \* as matching zero occurrences of the preceding character: dpTable[i][j]=dpTable[i][j−2]
-  2. Treat \* as matching one or more occurrences of the preceding character (if the preceding character matches s[i-1] or is .):
+  1. Treat `*` as matching zero occurrences of the preceding character: dpTable[i][j]=dpTable[i][j−2]
+  2. Treat `*` as matching one or more occurrences of the preceding character (if the preceding character matches s[i-1] or is `.`):
      dpTable[i][j]=dpTable[i−1][j]
 - In the end we need to return dpTable[s.length][p.length].
 
